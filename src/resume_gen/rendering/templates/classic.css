@@ -1,0 +1,112 @@
+/* Print-first, ATS-friendly classic single-column layout.
+   Typography:
+     - Latin: Inter (Google Fonts) — modern resume / tech-portfolio standard
+     - CJK:   PingFang SC (system) for Chinese fallback */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@page {
+  size: Letter;
+  margin: 0.55in 0.65in;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", "Helvetica Neue", Arial, "Segoe UI",
+               "PingFang SC", "Hiragino Sans GB", sans-serif;
+  color: #1a1a1a;
+  font-size: 10.25pt;
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern", "liga", "calt", "ss01";
+}
+.head {
+  border-bottom: 1.2pt solid #1a1a1a;
+  padding-bottom: 5pt;
+  margin-bottom: 8pt;
+}
+.head h1 {
+  margin: 0 0 1pt 0;
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.2pt;
+}
+.head .headline {
+  font-size: 10.5pt;
+  color: #444;
+  margin-bottom: 3pt;
+}
+.head .contact {
+  font-size: 9.25pt;
+  color: #444;
+}
+
+section { margin-top: 7pt; }
+h2 {
+  font-size: 10.5pt;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.1pt;
+  margin: 0 0 3pt 0;
+  padding-bottom: 1.5pt;
+  border-bottom: 0.5pt solid #aaa;
+  color: #111;
+}
+.summary { margin: 2pt 0 0 0; }
+ul.summary-bullets { margin: 2pt 0 0 14pt; padding: 0; }
+ul.summary-bullets li { margin-bottom: 2pt; }
+
+.skills-line { font-size: 9.75pt; margin-bottom: 2pt; }
+
+.entry { margin: 4pt 0 5pt 0; page-break-inside: avoid; }
+.entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10pt;
+}
+.entry-title { font-size: 10.25pt; }
+.entry-meta { font-size: 9.25pt; color: #555; white-space: nowrap; }
+.role-summary {
+  font-size: 9.5pt;
+  color: #555;
+  margin: 1pt 0 2pt 0;
+}
+.subsection { margin-top: 3pt; page-break-inside: avoid; }
+.sub-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10pt;
+}
+.subsection .sub-title {
+  font-size: 9.75pt;
+  font-weight: 600;
+  font-style: italic;
+  color: #1a1a1a;
+  margin: 2pt 0 0 0;
+  letter-spacing: 0.1pt;
+}
+.subsection .sub-date {
+  font-size: 9.25pt;
+  color: #555;
+  white-space: nowrap;
+}
+.subsection .sub-summary {
+  font-size: 9.5pt;
+  color: #555;
+  margin: 1pt 0 1pt 0;
+}
+.tech {
+  font-size: 9.5pt;
+  color: #555;
+  margin: 1pt 0 1pt 0;
+}
+ul {
+  margin: 2pt 0 0 14pt;
+  padding: 0;
+}
+ul.flat li { margin-bottom: 1.5pt; }
+li { margin-bottom: 1.5pt; }
+em { font-style: italic; }
+a { color: inherit; text-decoration: none; }

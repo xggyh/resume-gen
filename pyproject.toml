@@ -1,0 +1,30 @@
+[project]
+name = "resume-gen"
+version = "0.1.0"
+description = "JD-tailored resume generator (parse → match → rewrite → render)"
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=0.40.0",
+    "pydantic>=2.6",
+    "typer>=0.12",
+    "rich>=13.7",
+    "jinja2>=3.1",
+    "playwright>=1.45",
+    "python-docx>=1.1",
+    "pdfplumber>=0.11",
+    "python-dotenv>=1.0",
+    "pypdf>=4.2",
+]
+
+[project.scripts]
+resume-gen = "resume_gen.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"resume_gen" = ["rendering/templates/*.html", "rendering/templates/*.css"]

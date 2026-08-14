@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>{{ resume.basic_info.name }} — Resume</title>
+<style>{{ css | safe }}</style>
+</head>
+<body>
+<header class="head">
+  <h1>{{ resume.basic_info.name }}</h1>
+  {% if resume.basic_info.headline %}
+  <div class="headline">{{ resume.basic_info.headline }}</div>
+  {% endif %}
+  <div class="contact">
+    {%- set bi = resume.basic_info -%}
+    {%- set parts = [bi.email, bi.phone, bi.location, bi.linkedin, bi.github, bi.website] | select | list -%}
+    {%- for part in parts -%}
+      {{ part }}{%- if not loop.last %} &middot; {% endif -%}
+    {%- endfor -%}
+  </div>
+</header>
+
+{%- set L = resume.section_labels -%}
+{% if resume.professional_summary or resume.professional_summary_bullets %}
+<section>
+  <h2>{{ L.get('summary', 'Professional Summary') }}</h2>
+  {% if resume.professional_summary_bullets %}
+  <ul class="summary-bullets">
+    {% for b in resume.professional_summary_bullets %}<li>{{ b }}</li>{% endfor %}
+  </ul>
+  {% else %}
+  <p class="summary">{{ resume.professional_summary }}</p>
+  {% endif %}
+</section>
+{% endif %}
+
+{% if resume.experiences %}
+<section>
+  <h2>{{ L.get('experience', 'Work Experience') }}</h2>
+  {% for exp in resume.experiences %}
+  <article class="entry">
+    <div class="entry-head">
+      <div class="entry-title"><strong>{{ exp.company }}</strong> &middot; {{ exp.role }}</div>
+      <div class="entry-meta">
+        {% if exp.location %}{{ exp.location }}{% if exp.start_date or exp.end_date %} &nbsp;|&nbsp; {% endif %}{% endif %}
+        {{ exp.start_date or "" }}{% if exp.start_date or exp.end_date %} – {% endif %}{{ exp.end_date or "" }}
+      </div>
+    </div>
+    {% if exp.summary_line %}<div class="role-summary"><em>{{ exp.summary_line }}</em></div>{% endif %}
+    {% if exp.sub_sections %}
+      {% for sub in exp.sub_sections %}
+      <div class="subsection">
+        <div class="sub-head">
+          <div class="sub-title">{{ sub.title }}</div>
+          {% if sub.date_range %}<div class="sub-date">{{ sub.date_range }}</div>{% endif %}
+        </div>
+        {% if sub.summary_line %}<div class="sub-summary"><em>{{ sub.summary_line }}</em></div>{% endif %}
+        <ul>
+          {% for b in sub.bullets %}<li>{{ b.text }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    {% else %}
+    <ul>
+      {% for b in exp.bullets %}<li>{{ b.text }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+  </article>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if resume.projects %}
+<section>
+  <h2>{{ L.get('projects', 'Selected Projects') }}</h2>
+  {% for prj in resume.projects %}
+  <article class="entry">
+    <div class="entry-head">
+      <div class="entry-title">
+        <strong>{{ prj.name }}</strong>
+        {% if prj.role %} &middot; {{ prj.role }}{% endif %}
+        {% if prj.organization %} &middot; {{ prj.organization }}{% endif %}
+      </div>
+      <div class="entry-meta">
+        {{ prj.start_date or "" }}{% if prj.start_date or prj.end_date %} – {% endif %}{{ prj.end_date or "" }}
+      </div>
+    </div>
+    {% if prj.tech_stack %}
+    <div class="tech">Tech: {{ prj.tech_stack | join(', ') }}</div>
+    {% endif %}
+    <ul>
+      {% for b in prj.bullets %}<li>{{ b.text }}</li>{% endfor %}
+    </ul>
+  </article>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if resume.education %}
+<section>
+  <h2>{{ L.get('education', 'Education') }}</h2>
+  {% for ed in resume.education %}
+  <article class="entry">
+    <div class="entry-head">
+      <div class="entry-title"><strong>{{ ed.degree }}{% if ed.field %}, {{ ed.field }}{% endif %}</strong> &middot; {{ ed.institution }}</div>
+      <div class="entry-meta">
+        {{ ed.start_date or "" }}{% if ed.start_date or ed.end_date %} – {% endif %}{{ ed.end_date or "" }}
+        {% if ed.gpa %} &nbsp;|&nbsp; GPA: {{ ed.gpa }}{% endif %}
+      </div>
+    </div>
+    {% if ed.highlights %}
+    <ul>
+      {% for h in ed.highlights %}<li>{{ h }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+  </article>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if resume.publications %}
+<section>
+  <h2>{{ L.get('publications', 'Publications') }}</h2>
+  <ul class="flat">
+    {% for p in resume.publications %}
+    <li><em>{{ p.title }}</em>{% if p.venue %} — {{ p.venue }}{% endif %}{% if p.year %} ({{ p.year }}){% endif %}{% if p.authors %}. {{ p.authors }}{% endif %}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if resume.talks %}
+<section>
+  <h2>{{ L.get('talks', 'Selected Talks & Tech Sharing') }}</h2>
+  <ul class="flat">
+    {% for t in resume.talks %}
+    <li><strong>{{ t.title }}</strong>{% if t.venue %} — {{ t.venue }}{% endif %}{% if t.audience %} ({{ t.audience }}){% endif %}{% if t.year %}, {{ t.year }}{% endif %}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if resume.awards %}
+<section>
+  <h2>{{ L.get('awards', 'Awards & Achievements') }}</h2>
+  <ul class="flat">
+    {% for a in resume.awards %}
+    <li>{{ a.title }}{% if a.issuer %} — {{ a.issuer }}{% endif %}{% if a.year %} ({{ a.year }}){% endif %}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if resume.certifications %}
+<section>
+  <h2>{{ L.get('certifications', 'Certifications') }}</h2>
+  <ul class="flat">
+    {% for c in resume.certifications %}
+    <li>{{ c.name }}{% if c.issuer %} — {{ c.issuer }}{% endif %}{% if c.year %} ({{ c.year }}){% endif %}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if resume.skills_groups %}
+<section>
+  <h2>{{ L.get('skills', 'Skills') }}</h2>
+  {% for group_name, group_skills in resume.skills_groups.items() %}
+  <div class="skills-line"><strong>{{ group_name }}:</strong> {{ group_skills | join(' &middot; ') | safe }}</div>
+  {% endfor %}
+</section>
+{% elif resume.core_skills %}
+<section>
+  <h2>{{ L.get('skills', 'Skills') }}</h2>
+  <div class="skills-line">{{ resume.core_skills | join(' &middot; ') | safe }}</div>
+</section>
+{% endif %}
+
+{% if resume.languages %}
+<section>
+  <h2>{{ L.get('languages', 'Languages') }}</h2>
+  <div class="skills-line">{{ resume.languages | join(' &middot; ') | safe }}</div>
+</section>
+{% endif %}
+
+</body>
+</html>
